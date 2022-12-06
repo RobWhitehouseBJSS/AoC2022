@@ -1,6 +1,20 @@
 from copy import deepcopy
 
 
+def generate_crates(input):
+    col_count = int(input.split("\n")[-1][-1])
+    output = [[] * col_count for _ in range(col_count)]
+    for line in input.split("\n"):
+        column = 0
+        for x in line[1::4]:
+            if x.isalpha():
+                output[column].append(x)
+            column += 1
+    for column in output:
+        column.reverse()
+    return output
+
+
 def part1(crates, moves):
     for num, start, end in moves:
         for _ in range(num):
@@ -17,20 +31,10 @@ def part2(crates, moves):
 
 
 file = open("input.txt", "r")
-unused, moves = file.read().split("\n\n")
+raw_columns, moves = file.read().split("\n\n")
 
+crates = generate_crates(raw_columns)
 moves = [[int(x) for x in line.split() if x.isdigit()] for line in moves.splitlines()]
-crates = [
-    ["D", "T", "R", "B", "J", "L", "W", "G"],
-    ["S", "W", "C"],
-    ["R", "Z", "T", "M"],
-    ["D", "T", "C", "H", "S", "P", "V"],
-    ["G", "P", "T", "L", "D", "Z"],
-    ["F", "B", "R", "Z", "J", "Q", "C", "D"],
-    ["S", "B", "D", "J", "M", "F", "T", "R"],
-    ["L", "H", "R", "B", "T", "V", "M"],
-    ["Q", "P", "D", "S", "V"]
-]
 
 p1 = part1(deepcopy(crates), moves)
 p2 = part2(deepcopy(crates), moves)
